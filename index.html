@@ -1,0 +1,773 @@
+<!-- Chelsea's 1st Birthday Quiz -->
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,600&family=DM+Mono:wght@400;500&display=swap");
+
+  :root {
+    --cream: #fdf6ec;
+    --peach: #ffd6c0;
+    --pink: #ff9eb4;
+    --hot: #ff5d8f;
+    --plum: #5b2a86;
+    --ink: #2a1a3a;
+    --mint: #b8e6c8;
+    --butter: #ffe27a;
+    --shadow: 6px 6px 0 var(--ink);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Fraunces", serif;
+    background: radial-gradient(
+        circle at 10% 20%,
+        var(--peach) 0%,
+        transparent 40%
+      ),
+      radial-gradient(circle at 90% 80%, var(--mint) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, var(--butter) 0%, transparent 50%),
+      var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 1.5rem;
+    overflow-x: hidden;
+  }
+
+  /* Confetti dots scattered around */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(
+        circle at 15% 15%,
+        var(--hot) 3px,
+        transparent 4px
+      ),
+      radial-gradient(circle at 85% 25%, var(--plum) 4px, transparent 5px),
+      radial-gradient(circle at 25% 75%, var(--butter) 5px, transparent 6px),
+      radial-gradient(circle at 75% 85%, var(--mint) 4px, transparent 5px),
+      radial-gradient(circle at 50% 10%, var(--pink) 3px, transparent 4px),
+      radial-gradient(circle at 10% 90%, var(--hot) 4px, transparent 5px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.7;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== TITLE SCREEN ===== */
+  .title-card {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-top: 2rem;
+    position: relative;
+    transform: rotate(-1deg);
+  }
+
+  .title-card::after {
+    content: "🎂";
+    position: absolute;
+    top: -28px;
+    right: -10px;
+    font-size: 3.5rem;
+    transform: rotate(15deg);
+  }
+
+  .eyebrow {
+    font-family: "DM Mono", monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--plum);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 10vw, 4.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    font-style: italic;
+    color: var(--hot);
+    margin-bottom: 0.5rem;
+    text-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--plum);
+    margin-bottom: 2rem;
+  }
+
+  .input-group {
+    margin: 1.5rem 0;
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    font-family: "DM Mono", monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+    color: var(--plum);
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 0.9rem 1.1rem;
+    font-family: "Fraunces", serif;
+    font-size: 1.1rem;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    background: white;
+    color: var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.15s;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-family: "Fraunces", serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: all 0.15s;
+    text-decoration: none;
+    margin: 0.5rem 0.25rem;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink);
+    outline: none;
+  }
+
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  .btn-primary {
+    background: var(--hot);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: var(--butter);
+    color: var(--ink);
+  }
+
+  /* ===== QUIZ CARD ===== */
+  .quiz-card {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 2rem 1.75rem;
+    margin-top: 2rem;
+  }
+
+  .progress-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-family: "DM Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--plum);
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: white;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    margin: 0 1rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--hot);
+    transition: width 0.4s ease;
+  }
+
+  .question {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .option {
+    background: white;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    font-family: "Fraunces", serif;
+    font-size: 1.05rem;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: all 0.15s;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .option:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--ink);
+    background: var(--peach);
+  }
+
+  .option:disabled {
+    cursor: not-allowed;
+  }
+
+  .option-letter {
+    font-family: "DM Mono", monospace;
+    font-weight: 500;
+    background: var(--butter);
+    border: 2px solid var(--ink);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  .option.correct {
+    background: var(--mint);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .option.correct .option-letter {
+    background: var(--ink);
+    color: var(--mint);
+  }
+
+  .option.wrong {
+    background: #ffb3b3;
+    opacity: 0.7;
+  }
+
+  .feedback {
+    margin-top: 1.25rem;
+    padding: 1rem 1.2rem;
+    background: var(--butter);
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    font-style: italic;
+    line-height: 1.5;
+    box-shadow: 3px 3px 0 var(--ink);
+    animation: pop 0.3s ease;
+  }
+
+  .feedback strong {
+    font-style: normal;
+    color: var(--hot);
+  }
+
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* ===== RESULTS ===== */
+  .result-card {
+    text-align: center;
+  }
+
+  .score-big {
+    font-size: 5rem;
+    font-weight: 800;
+    font-style: italic;
+    color: var(--hot);
+    text-shadow: 3px 3px 0 var(--ink);
+    line-height: 1;
+    margin: 1rem 0;
+  }
+
+  .score-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--plum);
+  }
+
+  .verdict {
+    font-size: 1.4rem;
+    font-weight: 600;
+    font-style: italic;
+    margin: 1.5rem 0;
+    color: var(--plum);
+  }
+
+  /* ===== LEADERBOARD ===== */
+  .leaderboard {
+    margin-top: 1.5rem;
+    text-align: left;
+  }
+
+  .leaderboard h2 {
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--hot);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .leader-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    background: white;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  .leader-row.you {
+    background: var(--mint);
+  }
+
+  .leader-row.first {
+    background: var(--butter);
+  }
+
+  .leader-rank {
+    font-family: "DM Mono", monospace;
+    font-weight: 500;
+    color: var(--plum);
+    width: 30px;
+  }
+
+  .leader-name {
+    flex: 1;
+    font-weight: 600;
+  }
+
+  .leader-score {
+    font-family: "DM Mono", monospace;
+    font-weight: 500;
+    color: var(--hot);
+  }
+
+  .empty-board {
+    text-align: center;
+    color: var(--plum);
+    font-style: italic;
+    padding: 1rem;
+  }
+
+  .small-text {
+    font-size: 0.85rem;
+    color: var(--plum);
+    margin-top: 1rem;
+    font-family: "DM Mono", monospace;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--plum);
+    font-style: italic;
+  }
+</style>
+
+<div class="container" id="app">
+  <div class="loading">Loading the party... 🎉</div>
+</div>
+
+<script>
+  // ===== QUIZ DATA =====
+  const QUESTIONS = [
+    {
+      q: "How heavy was Chelsea Girl when she was born?",
+      options: ["7 lbs 4 oz", "8 lbs 9 oz", "9 lbs 2 oz", "10 lbs even"],
+      answer: 1,
+      fact: "8 pounds 9 ounces. She was 99th percentile for her weight.",
+    },
+    {
+      q: "What was Chelsea's very first word?",
+      options: ["Mama", "Dada", "Kaka", "Nana"],
+      answer: 2,
+      fact: "Kaka. Probably her first word because her mother talks a lot of it.",
+    },
+    {
+      q: "Where does the name 'Chelsea' come from?",
+      options: [
+        "A football team",
+        "Aunty Cathy's daughter",
+        "A character on TV",
+        "It just sounded cute",
+      ],
+      answer: 1,
+      fact: "She was named after Aunty Cathy's daughter Chelsea — Joey's cousin, who's not with us anymore. Naming our girl after her keeps her memory alive. 💛",
+    },
+    {
+      q: "Chelsea's middle name is Renee — who is she named after?",
+      options: ["Aunty Cheyann", "Aunty Audrey", "Aunty Hailey", "Nanny Hine"],
+      answer: 2,
+      fact: "Renee, after Aunty Hailey — and yes, spelled with two E's just like Hailey's. Let's just hope she doesn't grow up to have a cheesy bum crack like her aunty 😂",
+    },
+    {
+      q: "Which of these is Chelsea NOT allergic to?",
+      options: ["Cashews", "Egg whites", "Strawberries", "Pistachios"],
+      answer: 2,
+      fact: "She's allergic to egg whites, cashews, pistachios AND hazelnuts. Strawberries are safe (for now)!",
+    },
+    {
+      q: "What did Mum do mid-push during Chelsea's birth?",
+      options: [
+        "Punched Joey in the balls",
+        "Farted (a tiny duck fart)",
+        "Shat the bed",
+        "Demanded an epidural",
+      ],
+      answer: 1,
+      fact: "A perfect little duck fart, witnessed by everyone staring at the fanny waiting for a head to appear. Iconic entrance energy.",
+    },
+    {
+      q: "How long was Mum in early labour before the emergency C-section?",
+      options: ["A few hours", "1 day", "2 days", "Almost a week"],
+      answer: 2,
+      fact: "TWO whole days of early labour, then a day in hospital, then an emergency C-section. He wahine toa a tana māmā. 💪",
+    },
+    {
+      q: "Chelsea LOVED her Jolly Jumper. How long could she jump non-stop?",
+      options: ["10 minutes", "20 minutes", "40 minutes", "An entire hour"],
+      answer: 2,
+      fact: "FORTY MINUTES of non-stop jumping. She also outgrew it in about 2 months by busting the weight limit. Jolly little jumper! 🦘",
+    },
+    {
+      q: "What's the ONLY thing that would soothe baby Chelsea during nappy changes?",
+      options: [
+        "Mum singing",
+        "Joey's beatboxing",
+        "The vacuum cleaner",
+        "Mum's duck farts",
+      ],
+      answer: 1,
+      fact: "Yes, Joey's beatboxing. Nothing more soothing than dad's dope beats. 🎤",
+    },
+    {
+      q: "Which sign language signs can Chelsea do?",
+      options: [
+        "Hello and goodbye",
+        "More, milk and eat",
+        "Please and thank you",
+        "Mum and dad",
+      ],
+      answer: 1,
+      fact: "More, milk, and eat — basically all the priorities sorted.",
+    },
+    {
+      q: "What's Chelsea's favourite fruit right now?",
+      options: ["Banana", "Red kiwifruit", "Strawberries", "Watermelon"],
+      answer: 1,
+      fact: "Red kiwifruit! She also loves broccoli, chicken fettuccine, and nachos. The girl has range.",
+    },
+    {
+      q: "Who is Chelsea's absolute favourite character?",
+      options: ["Bluey", "Blippi", "Moana", "Ms Rachel"],
+      answer: 2,
+      fact: "MOANA. The ocean chose her. 🌊",
+    },
+    {
+      q: "What's Chelsea's surprising favourite bird?",
+      options: ["A duck", "A seagull", "A tūī", "A pīwakawaka"],
+      answer: 1,
+      fact: "A SEAGULL. Of all the birds in the world. We love a girl with unusual taste. (Also, when feeding the ducks, she eats the peas and corn herself.)",
+    },
+  ];
+
+  // ===== STATE =====
+  let state = {
+    screen: "title",
+    name: "",
+    currentQ: 0,
+    score: 0,
+    answered: false,
+    leaderboard: [],
+  };
+
+  const app = document.getElementById("app");
+
+  // ===== STORAGE =====
+  async function loadLeaderboard() {
+    try {
+      const result = await window.storage.list("score:", true);
+      if (!result || !result.keys || result.keys.length === 0) return [];
+      const scores = [];
+      for (const key of result.keys) {
+        try {
+          const item = await window.storage.get(key, true);
+          if (item && item.value) {
+            scores.push(JSON.parse(item.value));
+          }
+        } catch (e) {
+          /* skip */
+        }
+      }
+      return scores.sort((a, b) => b.score - a.score || a.time - b.time);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async function saveScore(name, score) {
+    try {
+      const time = Date.now();
+      const key = `score:${time}_${Math.random().toString(36).slice(2, 7)}`;
+      await window.storage.set(
+        key,
+        JSON.stringify({ name, score, time }),
+        true
+      );
+    } catch (e) {
+      console.error("Save failed", e);
+    }
+  }
+
+  // ===== RENDER =====
+  function render() {
+    if (state.screen === "title") renderTitle();
+    else if (state.screen === "quiz") renderQuiz();
+    else if (state.screen === "results") renderResults();
+  }
+
+  function renderTitle() {
+    app.innerHTML = `
+      <div class="title-card">
+        <div class="eyebrow">★ Happy 1st Birthday ★</div>
+        <h1>Chelsea<br>Girl</h1>
+        <div class="subtitle">How well do you know her?</div>
+        <div class="input-group">
+          <label for="name-input">Your name</label>
+          <input type="text" id="name-input" placeholder="e.g. Aunty Hailey" maxlength="30" />
+        </div>
+        <button class="btn btn-primary" id="start-btn">Start the Quiz →</button>
+        <div class="small-text">${QUESTIONS.length} questions · cheeky answers ahead</div>
+      </div>
+    `;
+    const input = document.getElementById("name-input");
+    const btn = document.getElementById("start-btn");
+    input.focus();
+    btn.addEventListener("click", startQuiz);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") startQuiz();
+    });
+  }
+
+  function startQuiz() {
+    const input = document.getElementById("name-input");
+    const name = input.value.trim();
+    if (!name) {
+      input.focus();
+      input.style.background = "#ffe0e0";
+      setTimeout(() => (input.style.background = "white"), 600);
+      return;
+    }
+    state.name = name;
+    state.currentQ = 0;
+    state.score = 0;
+    state.answered = false;
+    state.screen = "quiz";
+    render();
+  }
+
+  function renderQuiz() {
+    const q = QUESTIONS[state.currentQ];
+    const progress = (state.currentQ / QUESTIONS.length) * 100;
+    app.innerHTML = `
+      <div class="quiz-card">
+        <div class="progress-bar">
+          <span>Q${state.currentQ + 1}</span>
+          <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+          <span>${QUESTIONS.length}</span>
+        </div>
+        <div class="question">${q.q}</div>
+        <div class="options" id="options"></div>
+        <div id="feedback-area"></div>
+      </div>
+    `;
+    const optionsEl = document.getElementById("options");
+    const letters = ["A", "B", "C", "D"];
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.addEventListener("click", () => selectAnswer(i));
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(idx) {
+    if (state.answered) return;
+    state.answered = true;
+    const q = QUESTIONS[state.currentQ];
+    const correct = idx === q.answer;
+    if (correct) state.score++;
+
+    const optionEls = document.querySelectorAll(".option");
+    optionEls.forEach((el, i) => {
+      el.disabled = true;
+      if (i === q.answer) el.classList.add("correct");
+      else if (i === idx) el.classList.add("wrong");
+    });
+
+    const feedback = document.getElementById("feedback-area");
+    feedback.innerHTML = `
+      <div class="feedback">
+        <strong>${correct ? "🎉 Yes!" : "💛 Not quite."}</strong> ${q.fact}
+      </div>
+      <div style="text-align:center; margin-top:1rem;">
+        <button class="btn btn-primary" id="next-btn">
+          ${
+            state.currentQ < QUESTIONS.length - 1
+              ? "Next question →"
+              : "See your score →"
+          }
+        </button>
+      </div>
+    `;
+    document.getElementById("next-btn").addEventListener("click", nextQuestion);
+  }
+
+  async function nextQuestion() {
+    state.currentQ++;
+    state.answered = false;
+    if (state.currentQ >= QUESTIONS.length) {
+      state.screen = "results";
+      await saveScore(state.name, state.score);
+      state.leaderboard = await loadLeaderboard();
+    }
+    render();
+  }
+
+  function getVerdict(score) {
+    const pct = score / QUESTIONS.length;
+    if (pct === 1) return "PERFECT! You ARE Chelsea's biggest fan 🏆";
+    if (pct >= 0.85) return "Inner circle energy. Chelsea-certified! 💖";
+    if (pct >= 0.65) return "Solid effort, you know your girl 🌟";
+    if (pct >= 0.4) return "You'll get there — more cuddles required 🤗";
+    return "Time to spend more time with the birthday girl! 🎂";
+  }
+
+  function renderResults() {
+    const verdict = getVerdict(state.score);
+    let leaderHTML = "";
+    if (state.leaderboard.length === 0) {
+      leaderHTML = '<div class="empty-board">Be the first on the board!</div>';
+    } else {
+      const top = state.leaderboard.slice(0, 10);
+      const myEntry = state.leaderboard.findLast(
+        (e) => e.name === state.name && e.score === state.score
+      );
+      leaderHTML = top
+        .map((e, i) => {
+          const isMe = myEntry && e.time === myEntry.time;
+          const cls = i === 0 ? "first" : isMe ? "you" : "";
+          const medal =
+            i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}`;
+          return `
+          <div class="leader-row ${cls}">
+            <span class="leader-rank">${medal}</span>
+            <span class="leader-name">${escapeHtml(e.name)}${
+            isMe ? " (you)" : ""
+          }</span>
+            <span class="leader-score">${e.score}/${QUESTIONS.length}</span>
+          </div>
+        `;
+        })
+        .join("");
+    }
+
+    app.innerHTML = `
+      <div class="quiz-card result-card">
+        <div class="score-label">Your score</div>
+        <div class="score-big">${state.score}/${QUESTIONS.length}</div>
+        <div class="verdict">${verdict}</div>
+        <div class="leaderboard">
+          <h2>🏆 Family Leaderboard</h2>
+          ${leaderHTML}
+        </div>
+        <div style="margin-top:1.5rem;">
+          <button class="btn btn-secondary" id="again-btn">Pass to next player ↺</button>
+        </div>
+      </div>
+    `;
+    document.getElementById("again-btn").addEventListener("click", () => {
+      state.screen = "title";
+      state.name = "";
+      render();
+    });
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        }[c])
+    );
+  }
+
+  // ===== INIT =====
+  render();
+</script>

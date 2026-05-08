@@ -1,0 +1,10 @@
+# Secrets
+.env
+
+# Caddy runtime
+caddy_data/
+caddy_config/
+
+# Tailscale runtime state
+ts/
+tailscale/

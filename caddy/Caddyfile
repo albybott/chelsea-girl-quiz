@@ -1,0 +1,11 @@
+# ${SERVICE}.${TAILNET}.ts.net
+#
+# To enable HTTPS via Tailscale (Let's Encrypt over the Tailnet), drop the
+# `http://` prefix below AND uncomment the tailscaled socket volume in
+# compose.yaml (both the tailscale and application services).
+# See: https://tailscale.com/kb/1190/caddy-certificates
+http://{$SERVICE}.{$TAILNET}.ts.net {
+	root * /srv
+	encode zstd gzip
+	file_server
+}
